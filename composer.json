@@ -1,0 +1,28 @@
+{
+  "require": {
+    "slim/slim": "^3",
+    "php-di/slim-bridge": "^2",
+    "zeuxisoo/slim-whoops": "0.6.*",
+    "slim/http-cache": "0.4.*",
+    "symfony/http-foundation": "^4",
+    "illuminate/database": "^5",
+    "monolog/monolog": "^2",
+    "league/flysystem": "^1",
+    "league/plates": "^3"
+  },
+  "minimum-stability": "beta",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Application\\": "Application/",
+      "Controllers\\": "Controllers/",
+      "Models\\": "Models/",
+      "Views\\": "Views/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}
