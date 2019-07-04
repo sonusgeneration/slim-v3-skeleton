@@ -8,7 +8,13 @@ use \Application\Session\Storage\NativeSessionStorage;
 use \Psr\Http\Message\ServerRequestInterface;
 use \Psr\Http\Message\ResponseInterface;
 
-# Verify access control...
+/**
+ *  |-------------------------------------------------------------------
+ *  |   ACCESS CONTROL
+ *  |-------------------------------------------------------------------
+ *  |
+ *  |   We don't allow direct access to files other than "index.php".
+ */
 if(!defined('APP_START')) {
     exit("Access denied.");
 }

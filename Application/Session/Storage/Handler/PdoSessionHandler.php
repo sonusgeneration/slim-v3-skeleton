@@ -5,7 +5,13 @@ namespace Application\Session\Storage\Handler;
 
 use \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler as SymfonyPdoSessionHandler;
 
-# Verify access control...
+/**
+ *  |-------------------------------------------------------------------
+ *  |   ACCESS CONTROL
+ *  |-------------------------------------------------------------------
+ *  |
+ *  |   We don't allow direct access to files other than "index.php".
+ */
 if(!defined('APP_START')) {
     exit("Access denied.");
 }

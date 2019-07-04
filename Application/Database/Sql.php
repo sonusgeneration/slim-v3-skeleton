@@ -3,7 +3,13 @@ declare(strict_types=1);
 
 namespace Application\Database;
 
-# Verify access control...
+/**
+ *  |-------------------------------------------------------------------
+ *  |   ACCESS CONTROL
+ *  |-------------------------------------------------------------------
+ *  |
+ *  |   We don't allow direct access to files other than "index.php".
+ */
 if(!defined('APP_START')) {
     exit("Access denied.");
 }
