@@ -19,6 +19,7 @@ if(!defined('APP_START')) {
  */
 defined("DIR_BASE") OR define("DIR_BASE", __DIR__ . DIRECTORY_SEPARATOR);
 defined("DIR_VENDOR") OR define("DIR_VENDOR", DIR_BASE . "vendor" . DIRECTORY_SEPARATOR);
+defined("DIR_CONFIG") OR define("DIR_CONFIG", DIR_BASE . "config" . DIRECTORY_SEPARATOR);
 
 /**
  *  |-------------------------------------------------------------------
@@ -29,3 +30,13 @@ defined("FILE_AUTOLOAD") OR define("FILE_AUTOLOAD", "autoload.php");
 defined("FILE_MIDDLEWARES") OR define("FILE_MIDDLEWARES", "middlewares.php");
 defined("FILE_ROUTES") OR define("FILE_ROUTES", "routes.php");
 defined("FILE_ERROR_HANDLER") OR define("FILE_ERROR_HANDLER", "error-handler.php");
+defined("FILE_CONFIG_PRODUCTION") OR define("FILE_CONFIG_PRODUCTION", "app.php");
+defined("FILE_CONFIG_DEVELOPMENT") OR define("FILE_CONFIG_DEVELOPMENT", "app.dev.php");
+
+/**
+ *  |-------------------------------------------------------------------
+ *  |   ENVIRONMENT CONSTANTS
+ *  |-------------------------------------------------------------------
+ */
+defined("ENV_DEVELOPMENT") OR define("ENV_DEVELOPMENT", "development");
+defined("ENV_PRODUCTION") OR define("ENV_PRODUCTION", "production");
