@@ -13,6 +13,7 @@ if(!defined('APP_START')) {
 }
 
 return [
+    # General settings...
     "settings" => [
         "debug"                             => true,
         "httpVersion"                       => "1.1",

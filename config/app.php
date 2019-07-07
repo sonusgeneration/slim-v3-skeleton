@@ -22,6 +22,7 @@ if(!defined('APP_START')) {
 }
 
 return [
+    # General settings...
     "settings" => [
         "debug"                             => false,
         "httpVersion"                       => "1.1",
@@ -33,12 +34,15 @@ return [
         "routerCacheFile"                   => false
     ],
 
+    # Database settings...
     "db.host"   => "mysql:host=localhost;port=3306;dbname=sample_mysqldb",
     "db.user"   => "sample_mysqluser",
     "db.passwd" => "sample_mysqluserpassword",
 
+    # Session settings...
     "session.db.table"  => "SESSIONS",
 
+    # Pdo sql wrapper...
     Sql::class => function (ContainerInterface $c) {
         return new Sql(
                 $c->get("db.host"),
@@ -47,6 +51,7 @@ return [
             );
     },
 
+    # Session database handler...
     NativeSessionStorage::class => function (ContainerInterface $c) {
         return new NativeSessionStorage([], 
             new PdoSessionHandler(
@@ -54,10 +59,12 @@ return [
                 [ "db_table" => $c->get("session.db.table") ]));
     },
 
+    # Cache provider...
     "cache" => function () {
         return new CacheProvider();
     },
 
+    # Access logger...
     "access_logger" => function (ContainerInterface $c) {
         $logger = new Logger("access_logger");
         $handler = new StreamHandler(DIR_LOGS_ACCESS . FILE_LOG_ACCESS , Logger::INFO);
