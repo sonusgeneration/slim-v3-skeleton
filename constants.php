@@ -20,6 +20,10 @@ if(!defined('APP_START')) {
 defined("DIR_BASE") OR define("DIR_BASE", __DIR__ . DIRECTORY_SEPARATOR);
 defined("DIR_VENDOR") OR define("DIR_VENDOR", DIR_BASE . "vendor" . DIRECTORY_SEPARATOR);
 defined("DIR_CONFIG") OR define("DIR_CONFIG", DIR_BASE . "config" . DIRECTORY_SEPARATOR);
+defined("DIR_TMP") OR define("DIR_TMP", DIR_BASE . "tmp" . DIRECTORY_SEPARATOR);
+defined("DIR_CACHE") OR define("DIR_CACHE", DIR_TMP . "cache" . DIRECTORY_SEPARATOR);
+defined("DIR_LOGS") OR define("DIR_LOGS", DIR_TMP . "logs" . DIRECTORY_SEPARATOR);
+defined("DIR_LOGS_ACCESS") OR define("DIR_LOGS_ACCESS", DIR_LOGS . "access" . DIRECTORY_SEPARATOR);
 
 /**
  *  |-------------------------------------------------------------------
@@ -32,6 +36,7 @@ defined("FILE_ROUTES") OR define("FILE_ROUTES", "routes.php");
 defined("FILE_ERROR_HANDLER") OR define("FILE_ERROR_HANDLER", "error-handler.php");
 defined("FILE_CONFIG_PRODUCTION") OR define("FILE_CONFIG_PRODUCTION", "app.php");
 defined("FILE_CONFIG_DEVELOPMENT") OR define("FILE_CONFIG_DEVELOPMENT", "app.dev.php");
+defined("FILE_LOG_ACCESS") OR define("FILE_LOG_ACCESS", "access." . date("Y-m-d") . ".log");
 
 /**
  *  |-------------------------------------------------------------------

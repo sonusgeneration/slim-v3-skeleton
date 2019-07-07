@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+use \Application\Middlewares\SessionMiddleware;
+use \Application\Middlewares\AccessLoggingMiddleware;
+
 /**
  *  |-------------------------------------------------------------------
  *  |   ACCESS CONTROL
@@ -13,4 +16,5 @@ if(!defined('APP_START')) {
 }
 
 #   Middleware definitions...
-$app->add(\Application\Middlewares\SessionMiddleware::class);
+$app->add(SessionMiddleware::class);
+$app->add(AccessLoggingMiddleware::class);
