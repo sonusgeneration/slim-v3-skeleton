@@ -6,6 +6,9 @@ use \Application\Database\Sql;
 use \Application\Session\Storage\NativeSessionStorage;
 use \Application\Session\Storage\Handler\PdoSessionHandler;
 use \Slim\HttpCache\CacheProvider;
+use \Monolog\Logger;
+use \Monolog\Handler\StreamHandler;
+use \Monolog\Formatter\LineFormatter;
 
 /**
  *  |-------------------------------------------------------------------
@@ -53,5 +56,14 @@ return [
 
     "cache" => function () {
         return new CacheProvider();
+    },
+
+    "access_logger" => function (ContainerInterface $c) {
+        $logger = new Logger("access_logger");
+        $handler = new StreamHandler(DIR_LOGS_ACCESS . FILE_LOG_ACCESS , Logger::INFO);
+        $handler->setFormatter(new LineFormatter("%message%\n"));
+        $logger->pushHandler($handler);
+
+        return $logger;
     }
 ];
