@@ -25,7 +25,7 @@ class Kernel extends App {
             $config = array_merge($config, require_once(DIR_CONFIG . FILE_CONFIG_DEVELOPMENT));
         }
 
-        $builder->addDefinitions(DIR_CONFIG . FILE_CONFIG_PRODUCTION);
+        $builder->addDefinitions($config);
 
     }
 
