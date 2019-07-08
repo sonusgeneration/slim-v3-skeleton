@@ -26,7 +26,7 @@ if(!defined('APP_START')) {
 class Kernel extends App {
 
     /**
-     *  CONFIGURE CONTAINER
+     *  Configure Container
      *
      *  @since v1.0.0
      *  @param \DI\ContainerBuilder $builder

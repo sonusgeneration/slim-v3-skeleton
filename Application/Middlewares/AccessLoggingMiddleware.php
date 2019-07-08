@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Application\Middlewares;
 
-use \Psr\Container\ContainerInterface;
+use \Application\Loggers\AccessLogger;
 use \Psr\Http\Message\ServerRequestInterface;
 use \Psr\Http\Message\ResponseInterface;
 
@@ -18,14 +18,36 @@ if(!defined('APP_START')) {
     exit("Access denied.");
 }
 
+/**
+ *  SESSION MIDDLEWARE
+ *  @since v1.0.0
+ */
 final class AccessLoggingMiddleware {
 
+    /**
+     *  @property \Application\Logger\AccessLogger $_access_logger
+     */
     private $_access_logger = null;
 
-    public function __construct(ContainerInterface $container) {
-        $this->_access_logger = $container->get("access_logger");
+    /**
+     *  Class Constructor
+     *  @since v1.0.0
+     *
+     *  @param \Application\Logger\AccessLogger $container
+     */
+    public function __construct(AccessLogger $access_logger) {
+        $this->_access_logger = $access_logger;
     }
 
+    /**
+     *  Middleware __invoke
+     *  @since v1.0.0
+     *
+     *  @param \Psr\Http\Message\ServerRequestInterface $request
+     *  @param \Psr\Http\Message\ResponseInterface $response
+     *  @param callable $next
+     *  @return \Psr\Http\Message\ResponseInterface  
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {     
         # Next middleware...
         $response = $next($request, $response);

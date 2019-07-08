@@ -19,12 +19,33 @@ if(!defined('APP_START')) {
     exit("Access denied.");
 }
 
+/**
+ *  SESSION MIDDLEWARE
+ *  @since v1.0.0
+ *  
+ *  @see \Symfony\Component\HttpFoudation\Session\Session
+ */
 final class SessionMiddleware extends Session {
 
+    /**
+     *  Class Constructor
+     *  @since v1.0.0
+     *
+     *  @param \Application\Session\Storage\NativeStorageHandler $storage
+     */
     public function __construct(NativeSessionStorage $storage) {
         parent::__construct($storage, NULL, NULL);
     }
 
+    /**
+     *  Middleware __invoke
+     *  @since v1.0.0
+     *
+     *  @param \Psr\Http\Message\ServerRequestInterface $request
+     *  @param \Psr\Http\Message\ResponseInterface $response
+     *  @param callable $next
+     *  @return \Psr\Http\Message\ResponseInterface  
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
         # Start the session...
         $this->start();
