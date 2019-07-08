@@ -17,7 +17,7 @@ if(!defined('APP_START')) {
 }
 
 /**
- *  ACCESS LOGGING MIDDLEWARE
+ *  ACCESS LOGGER
  *  @since v1.0.0
  *
  *  @see \Monolog\Logger
