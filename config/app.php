@@ -9,6 +9,8 @@ use \Slim\HttpCache\CacheProvider;
 use \Application\Loggers\AccessLogger;
 use \Monolog\Handler\StreamHandler;
 use \Monolog\Formatter\LineFormatter;
+use \Psr\Log\LoggerInterface;
+use \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage as SymfonyNativeSessionStorage;
 
 /**
  *  |-------------------------------------------------------------------
@@ -43,7 +45,7 @@ return [
     "session.db.table"  => "SESSIONS",
 
     # Pdo sql wrapper...
-    Sql::class => function (ContainerInterface $c) {
+    Sql::class => function (ContainerInterface $c) : \PDO {
         return new Sql(
                 $c->get("db.host"),
                 $c->get("db.user"),
@@ -52,7 +54,7 @@ return [
     },
 
     # Session database handler...
-    NativeSessionStorage::class => function (ContainerInterface $c) {
+    NativeSessionStorage::class => function (ContainerInterface $c) : SymfonyNativeSessionStorage {
         return new NativeSessionStorage([], 
             new PdoSessionHandler(
                 $c->get(Sql::class), 
@@ -60,14 +62,23 @@ return [
     },
 
     # Cache provider...
-    CacheProvider::class => function () {
+    CacheProvider::class => function () : CacheProvider {
         return new CacheProvider();
     },
 
     # Access logger...
-    AccessLogger::class => function (ContainerInterface $c) {
+    AccessLogger::class => function (ContainerInterface $c) : LoggerInterface {
         $logger = new AccessLogger("access_logger");
         $handler = new StreamHandler(DIR_LOGS_ACCESS . FILE_LOG_ACCESS , AccessLogger::INFO);
+        $handler->setFormatter(new LineFormatter("%message%\n"));
+        $logger->pushHandler($handler);
+
+        return $logger;
+    },
+
+    ErrorLogger::class => function (ContainerInterface $c) : LoggerInterface {
+        $logger = new ErrorLogger("error_logger");
+        $handler = new StreamHandler(DIR_LOGS_ERROR . FILE_LOG_ERROR , ErrorLogger::DEBUG);
         $handler->setFormatter(new LineFormatter("%message%\n"));
         $logger->pushHandler($handler);
 
