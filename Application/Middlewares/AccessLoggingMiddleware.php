@@ -19,7 +19,7 @@ if(!defined('APP_START')) {
 }
 
 /**
- *  SESSION MIDDLEWARE
+ *  ACCESS LOGGING MIDDLEWARE
  *  @since v1.0.0
  */
 final class AccessLoggingMiddleware {

@@ -16,4 +16,10 @@ if(!defined('APP_START')) {
     exit("Access denied.");
 }
 
+/**
+ *  ACCESS LOGGING MIDDLEWARE
+ *  @since v1.0.0
+ *
+ *  @see \Monolog\Logger
+ */
 final class AccessLogger extends Logger {}
