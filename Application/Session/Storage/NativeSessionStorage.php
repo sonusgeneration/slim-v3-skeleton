@@ -16,9 +16,21 @@ if(!defined('APP_START')) {
     exit("Access denied.");
 }
 
+/**
+ *  NATIVE SESSION STORAGE CLASS
+ *  @since v1.0.0
+ *
+ *  @see \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage
+ */
 final class NativeSessionStorage extends SymfonyNativeSessionStorage {
 
-    public function clean() {
+    /**
+     *  Clean
+     *  @since v1.0.0
+     *
+     *  @return void
+     */
+    public function clean() : void {
         $this->getSaveHandler()
             ->getHandler()
             ->clean();

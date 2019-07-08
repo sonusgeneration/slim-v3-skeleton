@@ -16,16 +16,41 @@ if(!defined('APP_START')) {
     exit("Access denied.");
 }
 
+/**
+ *  PDO SESSION HANDLER CLASS
+ *  @since v1.0.0
+ *
+ *  @see \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+ */
 final class PdoSessionHandler extends SymfonyPdoSessionHandler {
 
-    private $_pdo = NULL;
+    /**
+     *  @property \PDO|null $_pdo
+     */
+    private $_pdo = null;
 
+    /**
+     *  @property string $_table
+     */
     private $_table = "sessions";
 
-    private $_lifetimeCol = 'sess_lifetime';
+    /**
+     *  @property string $_lifetime_column
+     */
+    private $_lifetime_column = 'sess_lifetime';
 
-    private $_timeCol = 'sess_time';
+    /**
+     *  @property string $_time_column
+     */
+    private $_time_column = 'sess_time';
 
+    /**
+     *  Class Constructor
+     *  @since v1.0.0
+     *
+     *  @param \PDO $pdo
+     *  @param array $options
+     */
     public function __construct(\PDO $pdo, array $options = []) {
         $this->_pdo = $pdo;
         $this->_table = isset($options["db_table"]) ? $options["db_table"] : $this->_table;
@@ -33,8 +58,20 @@ final class PdoSessionHandler extends SymfonyPdoSessionHandler {
         parent::__construct($pdo, $options);
     }
 
-    public function clean() {
-        $stmt = $this->_pdo->prepare("DELETE FROM " . $this->_table . " WHERE " . $this->_lifetimeCol . " + " . $this->_timeCol . " < :time");
+    /**
+     *  Clean
+     *  @since v1.0.0
+     *
+     *  @return void
+     */
+    public function clean() : void {
+        $stmt = $this->_pdo->prepare("DELETE FROM "
+            . $this->_table 
+            . " WHERE " 
+            . $this->_lifetime_column 
+            . " + " 
+            . $this->_time_column 
+            . " < :time");
         $stmt->bindValue(':time', time(), \PDO::PARAM_INT);
         $stmt->execute();
         $stmt = NULL;
