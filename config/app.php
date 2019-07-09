@@ -7,10 +7,15 @@ use \Application\Session\Storage\NativeSessionStorage;
 use \Application\Session\Storage\Handler\PdoSessionHandler;
 use \Slim\HttpCache\CacheProvider;
 use \Application\Loggers\AccessLogger;
+use \Application\Loggers\ErrorLogger;
 use \Monolog\Handler\StreamHandler;
 use \Monolog\Formatter\LineFormatter;
 use \Psr\Log\LoggerInterface;
 use \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage as SymfonyNativeSessionStorage;
+use \Controllers\ErrorHandlers\ResourceNotFoundController;
+use \Controllers\ErrorHandlers\MethodNotAllowedController;
+use \Controllers\ErrorHandlers\CustomErrorController;
+use \Controllers\ErrorHandlers\PhpErrorController;
 
 /**
  *  |-------------------------------------------------------------------
@@ -76,6 +81,7 @@ return [
         return $logger;
     },
 
+    # Error logger...
     ErrorLogger::class => function (ContainerInterface $c) : LoggerInterface {
         $logger = new ErrorLogger("error_logger");
         $handler = new StreamHandler(DIR_LOGS_ERROR . FILE_LOG_ERROR , ErrorLogger::DEBUG);
@@ -83,5 +89,25 @@ return [
         $logger->pushHandler($handler);
 
         return $logger;
+    },
+
+    # 404 Resource Not Found handler...
+    "notFoundHandler" => function () {
+        return new ResourceNotFoundController();
+    },
+
+    # 405 Method Not Allowed handler...
+    "notAllowedHandler" => function () {
+        return new MethodNotAllowedController();
+    },
+
+    # Custom Error handler...
+    "errorHandler" => function (ContainerInterface $c) {
+        return new CustomErrorController($c->get(ErrorLogger::class));
+    },
+
+    # PHP Error handler...
+    "phpErrorHandler" => function (ContainerInterface $c) {
+        return new PhpErrorController($c->get(ErrorLogger::class));
     }
 ];
