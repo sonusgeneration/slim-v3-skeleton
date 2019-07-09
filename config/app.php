@@ -2,16 +2,16 @@
 declare(strict_types=1);
 
 use \Psr\Container\ContainerInterface;
+use \Slim\HttpCache\CacheProvider;
 use \Application\Database\Sql;
 use \Application\Session\Storage\NativeSessionStorage;
 use \Application\Session\Storage\Handler\PdoSessionHandler;
-use \Slim\HttpCache\CacheProvider;
+use \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage as SymfonyNativeSessionStorage;
 use \Application\Loggers\AccessLogger;
 use \Application\Loggers\ErrorLogger;
 use \Monolog\Handler\StreamHandler;
 use \Monolog\Formatter\LineFormatter;
 use \Psr\Log\LoggerInterface;
-use \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage as SymfonyNativeSessionStorage;
 use \Controllers\ErrorHandlers\ResourceNotFoundController;
 use \Controllers\ErrorHandlers\MethodNotAllowedController;
 use \Controllers\ErrorHandlers\CustomErrorController;
@@ -29,7 +29,7 @@ if(!defined('APP_START')) {
 }
 
 return [
-    # General settings...
+    # General Settings
     "settings" => [
         "debug"                             => false,
         "httpVersion"                       => "1.1",
@@ -41,15 +41,26 @@ return [
         "routerCacheFile"                   => false
     ],
 
-    # Database settings...
+    # Database Settings
     "db.host"   => "mysql:host=localhost;port=3306;dbname=sample_mysqldb",
     "db.user"   => "sample_mysqluser",
     "db.passwd" => "sample_mysqluserpassword",
 
-    # Session settings...
+    # Session Settings
     "session.db.table"  => "SESSIONS",
 
-    # Pdo sql wrapper...
+    /**
+     *  Caching
+     */
+
+    # Http Cache Provider
+    CacheProvider::class => function () : CacheProvider {
+        return new CacheProvider();
+    },
+
+    /**
+     *  Databases
+     */
     Sql::class => function (ContainerInterface $c) : \PDO {
         return new Sql(
                 $c->get("db.host"),
@@ -58,7 +69,9 @@ return [
             );
     },
 
-    # Session database handler...
+    /**
+     *  Sessions
+     */
     NativeSessionStorage::class => function (ContainerInterface $c) : SymfonyNativeSessionStorage {
         return new NativeSessionStorage([], 
             new PdoSessionHandler(
@@ -66,12 +79,11 @@ return [
                 [ "db_table" => $c->get("session.db.table") ]));
     },
 
-    # Cache provider...
-    CacheProvider::class => function () : CacheProvider {
-        return new CacheProvider();
-    },
+    /**
+     *  Loggers
+     */
 
-    # Access logger...
+    # Access Logger
     AccessLogger::class => function (ContainerInterface $c) : LoggerInterface {
         $logger = new AccessLogger("access_logger");
         $handler = new StreamHandler(DIR_LOGS_ACCESS . FILE_LOG_ACCESS , AccessLogger::INFO);
@@ -81,7 +93,7 @@ return [
         return $logger;
     },
 
-    # Error logger...
+    # Error Logger
     ErrorLogger::class => function (ContainerInterface $c) : LoggerInterface {
         $logger = new ErrorLogger("error_logger");
         $handler = new StreamHandler(DIR_LOGS_ERROR . FILE_LOG_ERROR , ErrorLogger::DEBUG);
@@ -91,22 +103,26 @@ return [
         return $logger;
     },
 
-    # 404 Resource Not Found handler...
+    /**
+     *  Error Handlers
+     */
+
+    # 404 Resource Not Found Handler
     "notFoundHandler" => function () {
         return new ResourceNotFoundController();
     },
 
-    # 405 Method Not Allowed handler...
+    # 405 Method Not Allowed Handler
     "notAllowedHandler" => function () {
         return new MethodNotAllowedController();
     },
 
-    # Custom Error handler...
+    # Custom Error Handler
     "errorHandler" => function (ContainerInterface $c) {
         return new CustomErrorController($c->get(ErrorLogger::class));
     },
 
-    # PHP Error handler...
+    # PHP Error Handler
     "phpErrorHandler" => function (ContainerInterface $c) {
         return new PhpErrorController($c->get(ErrorLogger::class));
     }

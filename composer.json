@@ -5,10 +5,9 @@
     "zeuxisoo/slim-whoops": "0.6.*",
     "slim/http-cache": "0.4.*",
     "symfony/http-foundation": "^4",
-    "illuminate/database": "^5",
     "monolog/monolog": "^2",
-    "league/flysystem": "^1",
-    "league/plates": "^3"
+    "dflydev/fig-cookies": "^2",
+    "slim/csrf": "0.8.*"
   },
   "minimum-stability": "beta",
   "prefer-stable": true,
