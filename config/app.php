@@ -73,10 +73,14 @@ return [
      *  Sessions
      */
     NativeSessionStorage::class => function (ContainerInterface $c) : SymfonyNativeSessionStorage {
-        return new NativeSessionStorage([], 
-            new PdoSessionHandler(
-                $c->get(Sql::class), 
-                [ "db_table" => $c->get("session.db.table") ]));
+        $PdoSessionHandler = new PdoSessionHandler($c->get(Sql::class),
+            [ "db_table" => $c->get("session.db.table") ]);
+
+        try {
+            $PdoSessionHandler->createTable();
+        } catch (\PDOException $e) { /* Table Already Exists! */ }
+
+        return new NativeSessionStorage([], $PdoSessionHandler);
     },
 
     /**
